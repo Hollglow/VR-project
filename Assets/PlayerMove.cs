@@ -17,6 +17,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float jumpMultiplier;
     [SerializeField] private KeyCode jumpKey;
 
+    public AudioSource footstep;
+
 
     private bool isJumping;
 
@@ -40,9 +42,19 @@ public class PlayerMove : MonoBehaviour
 
 
         charController.SimpleMove(forwardMovement + rightMovement);
-
+        
         if ((vertInput != 0 || horizInput != 0) && OnSlope())
+        {
             charController.Move(Vector3.down * charController.height / 2 * slopeForce * Time.deltaTime);
+            if (!footstep.isPlaying)
+            {
+                footstep.Play();
+            }
+        }
+        else
+        {
+            footstep.Pause();
+        }
 
         JumpInput();
     }
